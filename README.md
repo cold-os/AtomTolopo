@@ -90,69 +90,66 @@ All units communicate through standardized JSON, with interfaces fully exposed. 
 
 ```text
 ================================================================================
-Intelligent Diagnosis & Prescription Review System
-RAMEN Architecture Bidirectional Communication Demo
-Test Case: Closed-Loop Diagnosis for a Penicillin-Allergic Patient
+Intelligent Diagnosis & Prescription Audit System - RAMEN Architecture Demo
+Test Case: Closed-loop Diagnosis for a Patient with Penicillin Allergy
 ================================================================================
 
-[Phase 1] Patient data input
-Patient allergies: ['penicillin']
-Chief complaint: fever, cough for 3 days
+[Phase 1] Patient Data Input
+Allergies: ['penicillin']
+Chief Complaint: Fever and cough for 3 days
 
-[Phase 2] First-round diagnosis – Diagnosis Proposer generates a proposal (simulating a large model error)
-Diagnosis: Upper respiratory tract infection
+[Phase 2] First-Round Diagnosis - Diagnosis Proposer generates proposal (simulating model error)
+Diagnosis: Upper Respiratory Tract Infection
 Confidence: 0.85
-Recommended drug: Amoxicillin
+Recommended Drug: Amoxicillin
 
-[Phase 3] First-round review – Prescription Reviewer evaluates the prescription
+[Phase 3] First-Round Audit - Prescription Reviewer checks against predefined rules
 Verdict: rejected
-Rationale: Patient is allergic to penicillin; amoxicillin is contraindicated
+Rationale: Patient has penicillin allergy; amoxicillin is contraindicated
 
-[Phase 4] First-round execution – Safe Executor attempts to execute the prescription
-Result: Prescription blocked (review not passed)
+[Phase 4] First-Round Execution - Safe Executor verifies execution preconditions
+Result: Prescription blocked (audit not passed)
 
-[Phase 5] Feedback loop – Prescription Reviewer sends the interception information back to the Diagnosis Proposer
-Feedback: Amoxicillin rejected; patient allergies: [penicillin]
+[Phase 5] Feedback Loop - Prescription Reviewer passes audit result back to Diagnosis Proposer
+Feedback: Amoxicillin rejected | Patient allergies: [penicillin]
 
-[Phase 6] Second-round diagnosis – Diagnosis Proposer revises the proposal based on feedback
-Revised diagnosis: Acute bacterial bronchitis
+[Phase 6] Second-Round Diagnosis - Diagnosis Proposer revises proposal based on feedback
+Revised Diagnosis: Community-Acquired Pneumonia (mild)
 Confidence: 0.75
-Revised recommended drug: Azithromycin
-Reasoning: The patient presents with fever and productive cough with white sputum for 3 days, consistent with an acute respiratory infection. A history of diabetes increases the risk of bacterial infection, but the absence of typical pneumonia signs (chest pain, dyspnea) and imaging evidence does not support a pneumonia diagnosis at this time. Penicillin allergy requires avoidance of β-lactam antibiotics; considering common community-acquired respiratory pathogens, an atypical pathogen or susceptible bacterial infection is more likely.
+Revised Drug: Azithromycin
+Reasoning: Fever with productive cough for 3 days, temperature 38.2°C, respiratory rate 20/min, consistent with CAP. History of diabetes increases infection risk. Penicillin allergy rules out beta-lactams. Bacterial pneumonia likely given symptoms and risk factors, though chest X-ray and CBC are unavailable, limiting confidence.
 
-[Phase 7] Second-round review – Prescription Reviewer evaluates the revised prescription
+[Phase 7] Second-Round Audit - Prescription Reviewer checks revised prescription
 Verdict: approved
-Rationale: Prescription complies with safety rules
+Rationale: Prescription cleared all safety checks (whitelist, allergy, dosage, contraindications)
 
-[Phase 8] Second-round execution – Safe Executor carries out the revised prescription
-Result: Prescription issued: Azithromycin 500mg
+[Phase 8] Second-Round Execution - Safe Executor carries out the approved prescription
+Result: Prescription issued — Azithromycin 500mg
 
-[Phase 9] Complete audit log output
+[Phase 9] ColdReasoner Verification Report
+Result: ✓ PASSED (9/9)
+All message integrity, source authenticity, and execution precondition checks passed.
 
 ================================================================================
-Audit Log
+Key Audit Trail
 ================================================================================
 
 [MSG 1] DiagnosisProposer → PrescriptionReviewer
-Proposal | Diagnosis: Upper respiratory tract infection | Recommended drug: Amoxicillin
+Proposal | Diagnosis: URTI | Drug: Amoxicillin
 
 [MSG 2] PrescriptionReviewer → SafeExecutor
-Review result: rejected | Reason: Patient is allergic to penicillin; amoxicillin is contraindicated
+Verdict: rejected | Reason: Penicillin allergy — amoxicillin contraindicated
 
 [MSG 3] PrescriptionReviewer → DiagnosisProposer
-Feedback: Rejected drug Amoxicillin | Patient allergies: [penicillin]
+Feedback: Rejected drug Amoxicillin | Allergies: [penicillin]
 
 [MSG 4] DiagnosisProposer → PrescriptionReviewer
-Revised proposal | Diagnosis: Acute bacterial bronchitis | Recommended drug: Azithromycin
+Revised Proposal | Diagnosis: CAP (mild) | Drug: Azithromycin
 
 [MSG 5] PrescriptionReviewer → SafeExecutor
-Review result: approved | Reason: Prescription complies with safety rules
+Verdict: approved | Reason: All safety checks passed
 
 ================================================================================
-
-[Phase 10] ColdReasoner Verification Report
-Verification result: Passed (9/9)
-All message integrity, source legitimacy, and execution precondition checks passed.
 ```
 
 ---
