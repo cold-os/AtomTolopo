@@ -1,6 +1,25 @@
+<div align="center">
+    
+[English](README.md) | [中文](README.zh.md)
+
+</div>
+
+<div align="center">
+
 # AtomTopolo
 
 **原子化拓扑智能体系统原型**
+
+</div>
+
+<div align="center">
+
+[![Status](https://img.shields.io/badge/Status-Pre--Alpha--Prototype-orange)](https://github.com/cold-os/ColdOS)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![arXiv](https://img.shields.io/badge/arXiv-2512.08740-brightgreen.svg)](https://arxiv.org/abs/2512.08740)
+[![DOI](https://img.shields.io/badge/DOI-10.6084/m9.figshare.31696846-blueviolet.svg)](https://doi.org/10.6084/m9.figshare.31696846)
+
+</div>
 
 基于**RAMEN（递归对抗元执行网络）** 与**原子化拓扑**架构的智能诊断与处方辅助审核系统原型。
 
