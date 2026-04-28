@@ -166,7 +166,7 @@ AtomTopolo is the engineering expression of the action-layer safety philosophy w
 
 ## Acknowledgments and Disclaimer
 
-This project was independently designed and implemented by Yiming Lu. The core concepts (RAMEN, Atomic Topology) were proposed by the author. Code and documentation were generated with AI assistance.
+The core concepts (RAMEN, Atomic Topology) were proposed by the author. Code and documentation were generated with AI assistance.
 
 ---
 
