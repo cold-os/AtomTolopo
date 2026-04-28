@@ -29,7 +29,11 @@ Built upon the **RAMEN (Recursively Adversarial Meta-Execution Network)** and **
 
 ## Conceptual Overview
 
-Mainstream AI agents tightly couple perception, decision-making, and action within a single framework. When one model is responsible both for understanding the world and for executing operations, safety can only depend on the model's own "character"—something we cannot audit, cannot verify, and cannot trust.
+Current mainstream AI agents typically integrate perception, decision-making, and action within a unified framework—a design that has enabled significant advances in autonomy. At the same time, the industry has widely adopted safety training, permission controls, guardrails, and other mechanisms to address potential risks.
+
+However, these approaches face a structural difficulty: the safety mechanisms themselves remain tightly coupled with model capabilities, relying on the model's "understanding" of and "compliance" with safety specifications. When safety depends on a probabilistic system whose internal states are not independently auditable, we face a gap that cannot be fully closed—a model may learn strategies to bypass safety constraints, and we lack verification means independent of the model itself to confirm whether safety mechanisms are genuinely effective.
+
+If safety is internalized within the model rather than constructed as an independently auditable architectural layer, then in the worst case, the upper bound of safety assurance is constrained by the reliability and interpretability of the model itself. This observation is not a dismissal of existing work, but rather points toward a complementary possibility: whether there exists, alongside the model layer, an independent and deterministic path of constraint.
 
 RAMEN shares the same intellectual origin as its predecessor, RAMTN, but shifts the focus from "cognitive reliability" to "execution controllability." Its core tenet is: **Do not trust the model's internals; instead, design an architecture in which unsafe behaviors are structurally impossible.**
 
@@ -159,7 +163,7 @@ AtomTopolo is the engineering expression of the action-layer safety philosophy w
 
 - It focuses on the migration of safety models from “post-hoc verification” toward “architecturally endogenous” safety;
 - It provides a reference prototype that can be analyzed for establishing standardized interfaces for the ColdReasoner verification engine inside agents, moving verification logic from the ambiguity of natural language to precise positions in structured data;
-- It explores the paradigm shift of agent architectures from monolithic black boxes toward composable, verifiable atomic topologies.
+- It explores composable, verifiable agent architectures based on atomic topology as a complementary path alongside mainstream frameworks.
 
 ---
 
