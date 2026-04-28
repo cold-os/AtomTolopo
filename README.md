@@ -1,6 +1,25 @@
+<div align="center">
+    
+[English](README.md) | [中文](README.zh.md)
+
+</div>
+
+<div align="center">
+
 # AtomTopolo
 
 **An Atomic Topology Agent System Prototype**
+
+</div>
+
+<div align="center">
+
+[![Status](https://img.shields.io/badge/Status-Pre--Alpha--Prototype-orange)](https://github.com/cold-os/ColdOS)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![arXiv](https://img.shields.io/badge/arXiv-2512.08740-brightgreen.svg)](https://arxiv.org/abs/2512.08740)
+[![DOI](https://img.shields.io/badge/DOI-10.6084/m9.figshare.31696846-blueviolet.svg)](https://doi.org/10.6084/m9.figshare.31696846)
+
+</div>
 
 Built upon the **RAMEN (Recursively Adversarial Meta-Execution Network)** and **Atomic Topology** architecture, this prototype demonstrates an intelligent diagnosis and prescription review system.
 
