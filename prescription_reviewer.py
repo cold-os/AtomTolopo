@@ -20,8 +20,19 @@ class PrescriptionReviewer:
     def _load_knowledge_base(self):
         """
         加载硬编码的药品知识库
-        包含药品禁忌规则和剂量范围规则
+        包含药品白名单、禁忌规则和剂量范围规则
+        采用"默认拒绝"策略：只有在白名单中的药品才能被批准
         """
+        self.approved_drugs = [
+            "阿莫西林", "青霉素G", "苯唑西林", "氨苄西林",
+            "头孢克肟", "头孢拉定", "头孢呋辛", "头孢地尼",
+            "阿奇霉素", "红霉素", "克拉霉素",
+            "对乙酰氨基酚", "布洛芬", "萘普生",
+            "庆大霉素", "阿米卡星",
+            "磺胺嘧啶", "磺胺甲恶唑",
+            "维生素C", "维生素B6"
+        ]
+        
         self.allergy_rules = {
             "青霉素": ["阿莫西林", "青霉素G", "苯唑西林", "氨苄西林"],
             "头孢类": ["头孢克肟", "头孢拉定", "头孢呋辛", "头孢地尼"],
@@ -35,7 +46,10 @@ class PrescriptionReviewer:
             "对乙酰氨基酚": {"min_dosage": "325mg", "max_dosage": "500mg", "unit": "mg"},
             "布洛芬": {"min_dosage": "200mg", "max_dosage": "400mg", "unit": "mg"},
             "庆大霉素": {"min_dosage": "40mg", "max_dosage": "80mg", "unit": "mg"},
-            "头孢克肟": {"min_dosage": "100mg", "max_dosage": "200mg", "unit": "mg"}
+            "头孢克肟": {"min_dosage": "100mg", "max_dosage": "200mg", "unit": "mg"},
+            "阿奇霉素": {"min_dosage": "250mg", "max_dosage": "500mg", "unit": "mg"},
+            "红霉素": {"min_dosage": "250mg", "max_dosage": "500mg", "unit": "mg"},
+            "克拉霉素": {"min_dosage": "250mg", "max_dosage": "500mg", "unit": "mg"}
         }
         
         self.contraindication_rules = {
@@ -110,9 +124,26 @@ class PrescriptionReviewer:
                     return f"患者有{condition}病史，禁用{drug}"
         return None
     
+    def _check_whitelist(self, drug: str) -> Optional[str]:
+        """
+        检查药品是否在批准白名单中
+        
+        Args:
+            drug: 药品名称
+        
+        Returns:
+            错误原因，如果药品在白名单中返回None
+        """
+        if drug not in self.approved_drugs:
+            return f"药品{drug}不在批准白名单中，无法使用"
+        return None
+    
     def review(self, diagnosis_proposal: Dict[str, Any], patient_allergies: list, patient_medical_history: list) -> Dict[str, Any]:
         """
         审核诊断提案中的处方
+        
+        采用"默认拒绝"策略：必须通过所有检查才能批准
+        检查顺序：1. 白名单检查 2. 过敏检查 3. 剂量检查 4. 禁忌症检查
         
         Args:
             diagnosis_proposal: 诊断提案JSON
@@ -127,6 +158,10 @@ class PrescriptionReviewer:
         dosage = prescription.get("dosage", "")
         
         errors = []
+        
+        whitelist_error = self._check_whitelist(drug)
+        if whitelist_error:
+            errors.append(whitelist_error)
         
         allergy_error = self._check_allergy(drug, patient_allergies)
         if allergy_error:
@@ -149,6 +184,6 @@ class PrescriptionReviewer:
         else:
             return {
                 "verdict": "approved",
-                "reason": "处方符合安全规则",
+                "reason": "处方符合安全规则（已通过白名单、过敏、剂量、禁忌症检查）",
                 "revised_prescription": None
             }
