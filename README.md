@@ -1,189 +1,76 @@
 <div align="center">
-    
+
 [English](README.md) | [中文](README.zh.md)
 
-</div>
+# ColdTriad
 
-<div align="center">
+### L4 · Governance — the Separation-of-Powers Layer of the Cold Trust Protocol Stack
 
-# AtomTopolo
-
-**An Atomic Topology Agent System Prototype**
-
-</div>
-
-<div align="center">
-
-[![Status](https://img.shields.io/badge/Status-Pre--Alpha--Prototype-orange)](https://github.com/cold-os/ColdOS)
+[![Status](https://img.shields.io/badge/Status-Pre--Alpha--Prototype-orange)](https://github.com/cold-os/ColdTriad)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Field](https://img.shields.io/badge/Field-CSS%20%7C%20HCI-6f42c1.svg)](https://github.com/cold-os)
 [![arXiv](https://img.shields.io/badge/arXiv-2512.08740-brightgreen.svg)](https://arxiv.org/abs/2512.08740)
 [![DOI](https://img.shields.io/badge/DOI-10.6084/m9.figshare.31696846-blueviolet.svg)](https://doi.org/10.6084/m9.figshare.31696846)
 
 </div>
 
-Built upon the **RAMEN (Recursively Adversarial Meta-Execution Network)** and **Atomic Topology** architecture, this prototype demonstrates an intelligent diagnosis and prescription review system.
-
-> ⚠️ **Warning**: This project is a **Pre-Alpha prototype**. The code relies heavily on AI-assisted generation and has not undergone any security audit. The medical scenario is entirely simulated; it involves no real diagnoses or patient data, and must not be taken as any form of medical reference. It exists solely to illustrate the concepts of Atomic Topology and RAMEN. **Use in any real decision-making or production environment is strictly prohibited.**
-
----
-
-## Conceptual Overview
-
-Current mainstream AI agents typically integrate perception, decision-making, and action within a unified framework—a design that has enabled significant advances in autonomy. At the same time, the industry has widely adopted safety training, permission controls, guardrails, and other mechanisms to address potential risks.
-
-However, these approaches face a structural difficulty: the safety mechanisms themselves remain tightly coupled with model capabilities, relying on the model's "understanding" of and "compliance" with safety specifications. When safety depends on a probabilistic system whose internal states are not independently auditable, we face a gap that cannot be fully closed—a model may learn strategies to bypass safety constraints, and we lack verification means independent of the model itself to confirm whether safety mechanisms are genuinely effective.
-
-If safety is internalized within the model rather than constructed as an independently auditable architectural layer, then in the worst case, the upper bound of safety assurance is constrained by the reliability and interpretability of the model itself. This observation is not a dismissal of existing work, but rather points toward a complementary possibility: whether there exists, alongside the model layer, an independent and deterministic path of constraint.
-
-RAMEN shares the same intellectual origin as its predecessor, RAMTN, but shifts the focus from "cognitive reliability" to "execution controllability." Its core tenet is: **Do not trust the model's internals; instead, design an architecture in which unsafe behaviors are structurally impossible.**
-
-### Atomic Topology
-
-Agent capabilities are decomposed into indivisible atomic units, each granted only the minimum permissions necessary to perform its own function. Units share no internal state and communicate exclusively through structured JSON. Natively transparent interfaces allow any verification logic to deterministically judge whether a behavior is legitimate—without ever needing to understand the model's internals.
-
-### RAMEN: Recursively Adversarial Meta-Execution Network
-
-RAMEN evolves from **RAMTN (Recursively Adversarial Meta-Thinking Network)**:
-
-- **RAMTN** addresses cognitive processes—improving reasoning reliability through a “construct–challenge–observe” adversarial topology.
-- **RAMEN** addresses execution processes—enabling safety properties to emerge endogenously from the architecture through a “propose–review–execute” adversarial topology.
-
-Both serve a common purpose: to constrain probabilistic models with deterministic logic.
+> **Layer:** L4 · Governance — Cold Trust Protocol Stack  
+> **Research Question:** How can unsafe actions be made *structurally* impossible?  
+> **Method:** Separation of powers applied to agents — a proposer that cannot execute, a deterministic reviewer that cannot act, an executor that only runs approved actions (default-deny).  
+> **Status:** Pre-alpha prototype · not for production use.  
+> **Related:** [ColdReasoner](https://github.com/cold-os/ColdReasoner) (L3) · [Cold Trust Protocol Stack](https://github.com/cold-os) · arXiv:2512.08740 · figshare:31696846
 
 ---
 
-## Demonstration Scenario
+## 🧊 What It Is
 
-A simulated intelligent diagnosis and prescription review system.
+ColdTriad applies the principle of **separation of powers** to AI agents. Built on **RAMEN (Recursive Adversarial Meta-Execution Network)** and **atomic topology**, it demonstrates a governance architecture in which **unsafe behavior is structurally impossible — not merely discouraged**. The proposer cannot execute, the executor cannot propose, and the reviewer is independent and deterministic.
 
-The Diagnosis Proposer generates a diagnosis and medication recommendation based on patient data; the Prescription Reviewer checks the prescription's safety against hard-coded medical rules; the Safe Executor carries out the prescription only after approval. The three atoms each perform their own roles, with permissions strictly isolated.
+> **⚠️ Pre-Alpha:** this is a fully simulated prototype (medical scenario only); code is heavily AI-assisted and not security-audited. **Not for any real decision-making or production use.**
 
-The prototype illustrates a complete closed loop: the Diagnosis Proposer recommends an incorrect prescription, the Prescription Reviewer intercepts it according to built-in rules and provides feedback in the reverse direction, and the Diagnosis Proposer revises its proposal based on that feedback, which then passes review and is successfully executed.
+## 🎯 The Structural Problem It Addresses
 
----
+Mainstream agent designs couple safety mechanisms to the model's own capability — safety depends on the model "understanding and obeying" rules. When safety lives inside an un-auditable probabilistic system, the gap can never be fully closed: the model may learn to bypass its constraints, and there is no model-independent way to verify that the safety mechanism actually holds.
 
-## Core Conceptual Validation of the Prototype
+RAMEN shares its origin with RAMTN but shifts the focus from **cognitive reliability** to **execution controllability**:
 
-### Validation Objective
+- **RAMTN** — adversarial topology over *cognition* (construct · challenge · observe).
+- **RAMEN** — adversarial topology over *execution* (propose · review · execute).
 
-This prototype aims to test one central hypothesis:
+Both serve one goal: **constrain a probabilistic model with deterministic logic.**
 
-> When a unit capable of high-stakes decisions (determining a treatment plan) is stripped of execution rights, and the verification unit operates solely on deterministic rules without any model influence, the overall system can achieve a verifiable, auditable safety guarantee—without trusting the model.
+## 🎭 Three-Layer Separation (the triad)
 
-This scenario does not capture full clinical complexity, but it completes a full safety loop—from error, to interception, to correction, to execution—on a minimal yet critical case (a penicillin-allergic patient recommended amoxicillin). Its structural design principles are transferable to other high-risk domains.
+1. **Proposer** — may generate plans, but **cannot execute**.
+2. **Reviewer** — deterministic rules only; **cannot act or modify** the proposal.
+3. **Executor** — runs **only approved** actions; **blind** to source data and proposals.
 
-### Three-Layer Safety Structure
+The one who decides cannot execute; the one who executes cannot decide; the reviewer is independent and deterministic. **There is no path around the check.**
 
-1. **Diagnosis Proposer**: May suggest a treatment plan but **has no authority to issue a prescription**.
-2. **Prescription Reviewer**: Verifies prescription safety based on deterministic rules, but **has no authority to alter the diagnosis or execute the prescription**.
-3. **Safe Executor**: Only carries out prescriptions that have passed review; **cannot access patient data or offer medical advice**.
+## 🩺 A Minimal Governance Case Study
 
-The planner cannot execute, the executor cannot plan, and the reviewer is independent and deterministic. There exists no path to bypass verification.
-
-### Communication and Composability
-
-All units communicate through standardized JSON, with interfaces fully exposed. Each unit can be independently tested, replaced, or formally verified. When inputs and outputs are highly structured and verification categories are finite, atomic operations and their dedicated verification logic can be encapsulated as self-contained **Meta-Execution Units**—verification is no longer an external add-on but an organic component of execution. Based on such units, safety-oriented workflows for different scenarios can be constructed by rearranging their topological structures, providing a structural foundation for moving from “vertically specialized” toward “generally composable.”
-
----
-
-## Demonstration Output
-
-```text
-================================================================================
-Intelligent Diagnosis & Prescription Audit System - RAMEN Architecture Demo
-Test Case: Closed-loop Diagnosis for a Patient with Penicillin Allergy
-================================================================================
-
-[Phase 1] Patient Data Input
-Allergies: ['penicillin']
-Chief Complaint: Fever and cough for 3 days
-
-[Phase 2] First-Round Diagnosis - Diagnosis Proposer generates proposal (simulating model error)
-Diagnosis: Upper Respiratory Tract Infection
-Confidence: 0.85
-Recommended Drug: Amoxicillin
-
-[Phase 3] First-Round Audit - Prescription Reviewer checks against predefined rules
-Verdict: rejected
-Rationale: Patient has penicillin allergy; amoxicillin is contraindicated
-
-[Phase 4] First-Round Execution - Safe Executor verifies execution preconditions
-Result: Prescription blocked (audit not passed)
-
-[Phase 5] Feedback Loop - Prescription Reviewer passes audit result back to Diagnosis Proposer
-Feedback: Amoxicillin rejected | Patient allergies: [penicillin]
-
-[Phase 6] Second-Round Diagnosis - Diagnosis Proposer revises proposal based on feedback
-Revised Diagnosis: Community-Acquired Pneumonia (mild)
-Confidence: 0.75
-Revised Drug: Azithromycin
-Reasoning: Fever with productive cough for 3 days, temperature 38.2°C, respiratory rate 20/min, consistent with CAP. History of diabetes increases infection risk. Penicillin allergy rules out beta-lactams. Bacterial pneumonia likely given symptoms and risk factors, though chest X-ray and CBC are unavailable, limiting confidence.
-
-[Phase 7] Second-Round Audit - Prescription Reviewer checks revised prescription
-Verdict: approved
-Rationale: Prescription cleared all safety checks (whitelist, allergy, dosage, contraindications)
-
-[Phase 8] Second-Round Execution - Safe Executor carries out the approved prescription
-Result: Prescription issued — Azithromycin 500mg
-
-[Phase 9] ColdReasoner Verification Report
-Result: ✓ PASSED (9/9)
-All message integrity, source authenticity, and execution precondition checks passed.
-
-================================================================================
-Key Audit Trail
-================================================================================
-
-[MSG 1] DiagnosisProposer → PrescriptionReviewer
-Proposal | Diagnosis: URTI | Drug: Amoxicillin
-
-[MSG 2] PrescriptionReviewer → SafeExecutor
-Verdict: rejected | Reason: Penicillin allergy — amoxicillin contraindicated
-
-[MSG 3] PrescriptionReviewer → DiagnosisProposer
-Feedback: Rejected drug Amoxicillin | Allergies: [penicillin]
-
-[MSG 4] DiagnosisProposer → PrescriptionReviewer
-Revised Proposal | Diagnosis: CAP (mild) | Drug: Azithromycin
-
-[MSG 5] PrescriptionReviewer → SafeExecutor
-Verdict: approved | Reason: All safety checks passed
-
-================================================================================
-```
-
----
-
-## Relationship to ColdOS
-
-AtomTopolo is the engineering expression of the action-layer safety philosophy within the ColdOS ecosystem:
-
-- It focuses on the migration of safety models from “post-hoc verification” toward “architecturally endogenous” safety;
-- It provides a reference prototype that can be analyzed for establishing standardized interfaces for the ColdReasoner verification engine inside agents, moving verification logic from the ambiguity of natural language to precise positions in structured data;
-- It explores composable, verifiable agent architectures based on atomic topology as a complementary path alongside mainstream frameworks.
-
----
-
-## Acknowledgments and Disclaimer
-
-The core concepts (RAMEN, Atomic Topology) were proposed by the author. Code and documentation were generated with AI assistance.
-
----
-
-## Project Structure
+A simulated intelligent diagnosis and prescription-review system: a penicillin-allergic patient is recommended amoxicillin.
 
 ```
-AtomTopolo/
-├── diagnosis_proposer.py     # Diagnosis Proposer
-├── prescription_reviewer.py  # Prescription Reviewer
-├── safe_executor.py          # Safe Executor
-├── message_pipeline.py       # Message Pipeline & Audit Log
-├── cold_reasoner.py          # ColdReasoner Verification
-├── main.py                   # Main demonstration script
-└── README.md
+[1] Proposer suggests:  amoxicillin            →  ❌ Reviewer rejects (penicillin allergy)
+[2] Reviewer feeds back: "penicillin allergy — amoxicillin prohibited"
+[3] Proposer revises:    azithromycin          →  ✅ Reviewer approves (all checks passed)
+[4] Executor runs:       azithromycin 500mg    →  ColdReasoner verification: pass (9/9)
 ```
 
-## Quick Start
+A complete closed loop — **error → interception → feedback → correction → execution** — on a minimal but life-critical case, with every message recorded in the audit log. The structural principle transfers to other high-risk domains.
+
+## 🔍 Why It Matters
+
+- **AI governance:** separation of powers is an institutional-design pattern made *architectural*; default-deny is the governance default. Enforcement precedes the model.
+- **Computational social science:** the triad is a sociotechnical power distribution — proposal/review/execute traces are data on error-correction and control dynamics in human–AI systems.
+- **HCI:** the topology makes "who can do what" legible to the human — the human is the ultimate auditor.
+
+## 🔧 Composability
+
+All units communicate via standardized JSON with fully exposed interfaces. Each unit can be independently tested, replaced, or formally verified — the foundation for composing triads into larger safety workflows across domains.
+
+## 🚀 Quick Start
 
 ```bash
 pip install dashscope
@@ -191,6 +78,24 @@ export DASHSCOPE_API_KEY="your-key"
 python main.py
 ```
 
-## License
+## 🧪 Status & Limitations
+
+Pre-alpha concept prototype; the medical scenario is fully simulated (no real patients or data); no security audit; **no empirical studies yet** — the error–intercept–correction traces it produces are intended as data for computational analysis (CSS), and its triadic structure as a subject of human-oversight studies (HCI).
+
+## 🛣️ Roadmap
+
+1. **CSS:** computational analysis of triad traces — error-detection rates, correction-loop dynamics.
+2. **HCI:** user studies on human oversight of triadic agent systems.
+3. Compose triads into larger, reusable governance workflows.
+
+## 📜 Acknowledgement & Statement
+
+Core ideas (RAMEN, atomic topology) were proposed by the author; code and documentation were AI-assisted.
+
+## 📄 License
 
 Apache 2.0
+
+---
+
+*Part of the [Cold Trust Protocol Stack](https://github.com/cold-os) — trust protocols for human–AI interaction, anchored in computational social science.*
